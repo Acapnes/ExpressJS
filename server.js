@@ -20,6 +20,20 @@ app.post("/users",(req,res,next) => {
   });
 });
 
+app.delete("/users",(req,res,next) => {
+  res.json({
+    success: true,
+    comment: "Delete Request",
+  });
+});
+
+app.put("/users",(req,res,next) => {
+  res.json({
+    success: true,
+    comment: "Put Request",
+  });
+});
+
 app.get("/products", accessControl, (req, res, next) => { /// sadece belirttiğimiz request için çalışıyor.
   res.send("Products");
 });
