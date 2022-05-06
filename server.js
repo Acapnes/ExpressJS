@@ -21,9 +21,16 @@ app.post("/users", (req, res, next) => {
   });
 });
 
-app.delete("/users", (req, res, next) => {
+app.delete("/users/:id", (req, res, next) => {
+  const id = parseInt(req.params.id);
+  for (let i = 0; i < users.length; i++) {
+    if (users[i].id === id) {
+      users.splice(i,1);
+    }
+  }
   res.json({
     success: true,
+    data: users,
     comment: "Delete Request",
   });
 });
