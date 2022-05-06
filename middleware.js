@@ -1,12 +1,9 @@
 const accessControl = (req, res, next) => {
-  let control = false;
-  if (!control) {
-    res.status(404).json({
-      success: false,
-      message: "You are not uthorized",
-      status: 404
-    });
-  }
+  res.status(200).json({
+    success: true,
+    message: "You are uthorized",
+    status: 200
+  });
   next(); /// Next Yazılmassa request kullanıcı tarafından gönderilir serverdan yanıt gelmez
 };
 
