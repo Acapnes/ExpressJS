@@ -5,6 +5,8 @@ const app = express();
 
 const PORT = 5000;
 
+app.use(express.json());
+
 const users = [
   { id: 1, name: "Alper", password: "123" },
   { id: 2, name: "Omer", password: "321" },
@@ -14,9 +16,11 @@ const users = [
 
 
 app.post("/users",(req,res,next) => {
+  users.push(req.body);
   res.json({
     success: true,
     data: users,
+    response: "New user created"
   });
 });
 
@@ -38,11 +42,13 @@ app.get("/products", accessControl, (req, res, next) => { /// sadece belirttiği
   res.send("Products");
 });
 
-app.use(accessControl); /// Altındaki bütün requestler için çalışıyor
-
 app.get("/users", (req, res, next) => {
   res.json(users);
 });
+
+app.use(accessControl); /// Altındaki bütün requestler için çalışıyor
+
+
 
 app.listen(PORT, () => {
   console.log("Server Started!");
