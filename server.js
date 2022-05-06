@@ -10,11 +10,22 @@ const users = [
   { id: 2, name: "Omer", password: "321" },
 ];
 
+
+
+
+app.post("/users",(req,res,next) => {
+  res.json({
+    success: true,
+    data: users,
+  });
+});
+
 app.get("/products", accessControl, (req, res, next) => { /// sadece belirttiğimiz request için çalışıyor.
   res.send("Products");
 });
 
 app.use(accessControl); /// Altındaki bütün requestler için çalışıyor
+
 app.get("/users", (req, res, next) => {
   res.json(users);
 });
