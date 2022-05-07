@@ -1,4 +1,5 @@
-const User = require("../models/User");
+const User = require("../Models/User");
+const CustomError = require("../helpers/error/CustomError")
 
 const getAllUsers = (req, res, next) => {
   res.status(200).json({
@@ -29,13 +30,7 @@ const userRegister = async (req, res, next) => {
       data: resp
     });
   }).catch((err) => {
-    console.log("Error === "+err);
-    res.status(404).json({
-      message: "Error!",
-      success: false,
-      status: 404,
-      data: err
-    });
+    return next(err);
   });
 
 
@@ -47,9 +42,14 @@ const userProfile = (req, res, next) => {
   });
 };
 
+const testError = (req,res,next) =>{
+  return next(new SyntaxError("Custom error Message"));
+}
+
 module.exports = {
   getAllUsers,
   userLogin,
   userRegister,
   userProfile,
+  testError,
 };
