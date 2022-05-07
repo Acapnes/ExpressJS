@@ -2,13 +2,17 @@ const express = require("express");
 const { accessControl } = require("./middleware");
 const routers = require("./routers");
 const dotenv = require("dotenv");
-
+const connectDatabase = require("./helpers/database/connectDatabase");
 
 const app = express();
 
 dotenv.config({
   path : "./config/env/config.env"
 });
+
+// Mongodb Connection
+
+connectDatabase();
 
 app.use(express.json());
 
