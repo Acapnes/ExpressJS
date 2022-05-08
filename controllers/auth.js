@@ -23,11 +23,13 @@ const userRegister = asyncErrorWrapper(async (req, res, next) => {
     email,
     password,
     role,
-  }).then((resp) => {
-    res.status(200).json({
-      success: true,
-      data: resp,
-    });
+  });
+
+  const token = user.generateJwtFromUser();
+  console.log(token);
+  res.status(200).json({
+    success: true,
+    data: user,
   });
 });
 

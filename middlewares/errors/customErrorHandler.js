@@ -2,18 +2,24 @@ const CustomError = require('../../helpers/error/CustomError')
 const customErrorHandler = (err,req,res,next) =>{
     let customError = err;
     
+    console.log(err);
 
     if(err.name === "SyntaxError"){
       customError = new CustomError("Unexpected Syntax",400);
     };
 
     if(err.name == "ValidationError"){
-      customError = new CustomError(err.message,400)
+      customError = new CustomError(err.message,400);
+    };
+
+    if(err.code === 11000){
+      // Duplicate Key or email 
+      customError = new CustomError("Duplicate Key Found : Check Your Input",400);
     }
 
     res.status(customError.status || 500).json({
       success: false,
-      message: err.message
+      message: customError.message
     });
 };
 
