@@ -6,6 +6,7 @@ const connectDatabase = require("./helpers/database/connectDatabase");
 const customErrorHandler = require("./middlewares/errors/customErrorHandler")
 
 const app = express();
+app.use(express.json());
 
 dotenv.config({
   path: "./config/env/config.env",
@@ -14,8 +15,6 @@ dotenv.config({
 // Mongodb Connection
 
 connectDatabase();
-
-app.use(express.json());
 
 /// Routers
 app.use("", routers);
