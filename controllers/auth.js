@@ -2,7 +2,7 @@ const User = require("../Models/User");
 const CustomError = require("../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
 const { sendJwtToClient } = require("../helpers/authorization/tokenHelpers");
-
+const { validateUserInput } = require("../helpers/authorization/input/inputHelpers")
 
 const getAllUsers = (req, res, next) => {
   User.find({}, function (err, users) {
@@ -13,10 +13,21 @@ const getAllUsers = (req, res, next) => {
     });
   });
 };
-const userLogin = (req, res, next) => {
+const userLogin = async (req, res, next) => {
+
+  const { email, password } = req.body;
+  if (!validateUserInput(email, password)) {
+    return next(new CustomError("Please fill email and password", 404));
+  }
+
+  const user = await User.findOne({email}).select("+password");
+  console.log(user);
   res.status(200).json({
     success: true,
-    status: 200,
+    status: {
+      email,
+      password
+    },
   });
 };
 
@@ -37,8 +48,8 @@ const getUser = ((req, res, next) => {
 
   res.json({
     success: true,
-    data:{
-      id : req.user.id,
+    data: {
+      id: req.user.id,
       name: req.user.name
     }
   })

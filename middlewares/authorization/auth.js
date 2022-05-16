@@ -19,6 +19,7 @@ const getAccessToRoute = (req, res, next) => {
         req.user = { /// User is a variable can be anything and accessable from same route funcs. Example: req.user.id
             id: decoded.id,
             name: decoded.name,
+            password: decoded.password
         }
         next();
     })
