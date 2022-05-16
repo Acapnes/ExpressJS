@@ -16,7 +16,10 @@ const getAccessToRoute = (req, res, next) => {
         if (err) {
             return next(new CustomError("Auth token wrong or time is finished.", 401));
         }
-        console.log(decoded);
+        req.user = { /// User is a variable can be anything and accessable from same route funcs. Example: req.user.id
+            id: decoded.id,
+            name: decoded.name,
+        }
         next();
     })
 }

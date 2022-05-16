@@ -1,7 +1,7 @@
 const User = require("../Models/User");
 const CustomError = require("../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
-const {sendJwtToClient} = require("../helpers/authorization/tokenHelpers");
+const { sendJwtToClient } = require("../helpers/authorization/tokenHelpers");
 
 
 const getAllUsers = (req, res, next) => {
@@ -30,24 +30,19 @@ const userRegister = asyncErrorWrapper(async (req, res, next) => {
     role,
   });
 
-
-  sendJwtToClient(user,res);
+  sendJwtToClient(user, res);
 });
 
-const tokentest = ((req,res,next) => {
+const getUser = ((req, res, next) => {
 
   res.json({
-    success:true,
-    message:"Welcome u passed from authorization."
+    success: true,
+    data:{
+      id : req.user.id,
+      name: req.user.name
+    }
   })
 })
-
-const userProfile = (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    status: 200,
-  });
-};
 
 const testError = (req, res, next) => {
   return next(new SyntaxError("Custom error Message"));
@@ -57,7 +52,6 @@ module.exports = {
   getAllUsers,
   userLogin,
   userRegister,
-  userProfile,
   testError,
-  tokentest,
+  getUser,
 };
