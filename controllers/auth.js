@@ -1,6 +1,7 @@
 const User = require("../Models/User");
 const CustomError = require("../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
+const sendJwtToClient = require("../helpers/authorization/sendJwtToClient");
 
 const getAllUsers = (req, res, next) => {
   User.find({}, function (err, users) {
@@ -28,12 +29,8 @@ const userRegister = asyncErrorWrapper(async (req, res, next) => {
     role,
   });
 
-  const token = user.generateJwtFromUser();
-  console.log(token);
-  res.status(200).json({
-    success: true,
-    data: user,
-  });
+
+  sendJwtToClient(user,res);
 });
 
 const userProfile = (req, res, next) => {
