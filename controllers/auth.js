@@ -2,7 +2,7 @@ const User = require("../Models/User");
 const CustomError = require("../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
 const { sendJwtToClient } = require("../helpers/authorization/tokenHelpers");
-const { validateUserInput } = require("../helpers/authorization/input/inputHelpers")
+const { validateUserInput,comparePassword } = require("../helpers/authorization/input/inputHelpers")
 
 const getAllUsers = (req, res, next) => {
   User.find({}, function (err, users) {
@@ -21,14 +21,12 @@ const userLogin = async (req, res, next) => {
   }
 
   const user = await User.findOne({email}).select("+password");
-  console.log(user);
-  res.status(200).json({
-    success: true,
-    status: {
-      email,
-      password
-    },
-  });
+
+  if(!comparePassword(password,user.password)){
+    return next(new CustomError("Please check your credentials",400))
+  }
+  
+  sendJwtToClient(user, res);
 };
 
 const userRegister = asyncErrorWrapper(async (req, res, next) => {
@@ -50,7 +48,7 @@ const getUser = ((req, res, next) => {
     success: true,
     data: {
       id: req.user.id,
-      name: req.user.name
+      name: req.user.name,
     }
   })
 })
